@@ -1,0 +1,115 @@
+{% load static %}
+{% load pwa %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="google-site-verification" content="xrEq34SiNE9z1rg-b5rC9csvIk4YJunG0KMzQNgRIUk" />
+    <meta name="description" content="A search engine for developers to find Github Repos, youtube tutorials, online courses, and documentation faster.">
+    <meta name="robots" content="nofollow" />
+    <meta name="keywords" content="TechMinds, developer search, developer search engine," />
+    {% if not theme or theme == "light" %}
+      <meta name="theme-color" content="#37042">
+    {% endif %}
+    {% if theme == "dark" %}
+      <meta name="theme-color" content="#222">
+    {% endif %}
+
+    {% progressive_web_app_meta %}
+
+    {% comment %} Favicon {% endcomment %}
+    <link rel="icon" 
+      type="image/png" 
+      href="{% static 'short-logo.png' %}">
+
+    <title>{% block title %} TechMinds - A Search Engine for Developers {% endblock title %}</title>
+
+    {% block css %}
+      {% comment %} Materialize css {% endcomment %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+      {% comment %} No "theme" session is set, so follow the preferred color scheme set by system {% endcomment %}
+      {% if not theme %} 
+         <link rel="stylesheet" 
+              href="{% static 'light-variables.min.css' %}"
+              media="(prefers-color-scheme: no-preference), (prefers-color-scheme: light)" >
+        <link 
+          rel="stylesheet" 
+          href="{% static 'dark-variables.min.css' %}" 
+          media="(prefers-color-scheme: dark)" >
+      {% comment %} Only include `light-variables` css, if session "theme" is set to "light" {% endcomment %}
+      {% elif theme == "light" %}
+        <link rel="stylesheet" href="{% static 'light-variables.min.css' %}" >
+      {% comment %} Only include `dark-variables` css, if session "theme" is set to "dark" {% endcomment %}
+      {% elif theme == "dark"%}
+        <link rel="stylesheet" href="{% static 'dark-variables.min.css' %}" >
+      {% endif %}
+
+        <link rel="stylesheet" href="{% static 'index.min.css' %}" >
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {% endblock css %}
+
+  </head>
+  <body class="major-mono">
+    {% comment %} Main content {% endcomment %}
+    <main>
+      {% block body %}
+      {% endblock body %}
+    </main>
+
+
+  {% comment %} Footer {% endcomment %}
+  {% block footer %}
+    <footer class="page-footer z-depth-1">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5>  
+                  <a href="/">
+                    <span class="grey-text text-lighten-3">Tech</span><span class="white-text">Minds</span>
+                  </a>
+                </h5>
+                <p class="grey-text text-lighten-4">The search engine for  budding developers. </p>
+              </div>
+
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">About</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'search:credits' %}">Credits</a></li>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'search:about' %}">About</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+
+              <div class="left">
+               Created by Deepak Agarwal & Goutam Doddamani
+              </div>
+
+              <div class="right">
+                <a 
+                  id="theme-toggle"
+                  href="#!"
+                  class="clickable grey-text text-lighten-2">
+                  ...
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
+
+  {% endblock footer %}
+
+    {% block js %}
+        {% comment %} Materialize Js {% endcomment %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script type="text/javascript">const overide_preferred_color_scheme={{theme_session_set|safe}},LIGHT_THEME_URL="{{light_theme_url|safe}}",DARK_THEME_URL="{{dark_theme_url|safe}}";</script>
+        <script src="{% static 'index.min.js' %}"></script>
+    {% endblock js %}
+
+  </body>
+</html>
